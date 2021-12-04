@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import classnames from "classnames";
 import TicTacToe from "./algorithm";
-import "./App.css";
 
 let game = new TicTacToe(3);
 
@@ -18,16 +17,17 @@ const App = () => {
 
     useEffect(() => {
         setBoard(Array(Math.pow(parseInt(size), 2)).fill(undefined));
+        setClickedIndices({});
+        setIsGameStarted(false);
+        setGameResult({});
     }, [size]);
 
     useEffect(() => {
+        console.log("updated");
         let result = game && game.calculateWin(board);
-        console.log(game);
-        console.log(result);
+
         if (result) {
-            console.log(game);
             setGameResult(result);
-            console.log(result);
             setIsGameEnd(true);
         } else if (Object.keys(clickedIndices).length === size) {
             setIsGameEnd(true);
@@ -46,9 +46,7 @@ const App = () => {
     };
 
     const handleOnChangeGameSize = (e) => {
-        if (!isGameStarted) {
-            setSize(e.target.value[0]);
-        }
+        setSize(e.target.value[0]);
     };
 
     const handleOnSubmitGameStart = (e) => {
@@ -62,7 +60,6 @@ const App = () => {
     };
     const handleOnClickCell = (idx) => {
         if (!clickedIndices[idx]) {
-            console.log(idx);
             setClickedIndices({ ...clickedIndices, [idx]: true });
             let copyBoard = [...board];
             copyBoard[idx] = turn;
@@ -116,7 +113,8 @@ const App = () => {
             <div
                 className={classnames(
                     "game__board",
-                    size && `game__board--${size}`
+                    size && `game__board--${size}`,
+                    !isGameStarted && "disable"
                 )}
             >
                 {board.length &&
@@ -124,7 +122,14 @@ const App = () => {
                         return (
                             <div
                                 key={idx}
-                                className={classnames("game__board-cell")}
+                                className={classnames(
+                                    "game__board-cell",
+                                    Object.keys(gameResult).length > 0 &&
+                                        gameResult.winCase.indexOf(idx) !==
+                                            -1 &&
+                                        clickedIndices[idx] &&
+                                        "game__board-cell--won"
+                                )}
                                 onClick={() => handleOnClickCell(idx)}
                             >
                                 {entry && entry}
