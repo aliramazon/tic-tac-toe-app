@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import classnames from "classnames";
+import TicTacToe from "./algorithm";
 import "./App.css";
+
+let game = new TicTacToe(3);
 
 const App = () => {
     const [xPlayerName, setXPlayerName] = useState("");
@@ -11,10 +14,25 @@ const App = () => {
     const [turn, setTurn] = useState("");
     const [isGameEnd, setIsGameEnd] = useState(false);
     const [clickedIndices, setClickedIndices] = useState({});
+    const [gameResult, setGameResult] = useState({});
 
     useEffect(() => {
         setBoard(Array(Math.pow(parseInt(size), 2)).fill(undefined));
     }, [size]);
+
+    useEffect(() => {
+        let result = game && game.calculateWin(board);
+        console.log(game);
+        console.log(result);
+        if (result) {
+            console.log(game);
+            setGameResult(result);
+            console.log(result);
+            setIsGameEnd(true);
+        } else if (Object.keys(clickedIndices).length === size) {
+            setIsGameEnd(true);
+        }
+    }, [board]);
 
     const handleOnChangeXName = (e) => {
         if (!isGameStarted) {
@@ -36,6 +54,7 @@ const App = () => {
     const handleOnSubmitGameStart = (e) => {
         e.preventDefault();
         if (xPlayerName && oPlayerName && size) {
+            game = new TicTacToe(parseInt(size));
             setIsGameStarted(true);
             setBoard(Array(Math.pow(parseInt(size), 2)).fill(undefined));
             setTurn("X");
