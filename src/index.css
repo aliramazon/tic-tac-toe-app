@@ -34,6 +34,40 @@ code {
 
 .game__board {
     background-color: aquamarine;
+    width: 600px;
+    height: 600px;
+    display: grid;
+}
+
+.game__board-cell {
+    border: 1px solid black;
+    margin: -1px 0 0 -1px;
+}
+
+.game__board--3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+.game__board--4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+.game__board--5 {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.game__board--6 {
+    grid-template-columns: repeat(6, 1fr);
+}
+
+.game__board--7 {
+    grid-template-columns: repeat(7 1fr);
+}
+
+.game__board--8 {
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.game__board--9 {
+    grid-template-columns: repeat(9, 1fr);
 }
 
 .game__results {
